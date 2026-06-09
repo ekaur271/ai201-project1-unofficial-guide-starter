@@ -1,0 +1,21 @@
+TITLE: OSU CSE core course catalog descriptions
+SOURCE: OSU CSE Department course website
+URL: https://cse.osu.edu/courses
+
+COURSE | CSE 2221: Software I: Software Components (4.0 units)
+Intellectual foundations of software engineering; design-by-contract principles; mathematical modeling of software functionality; component-based software from the client perspective; layered data representation. This is the first course in the Software sequence and is commonly considered a weed-out course for the CSE major.
+
+COURSE | CSE 2231: Software II: Software Development and Design (4.0 units)
+Data representation using hashing, search trees, and linked data structures; algorithms for sorting; using trees for language processing; component interface design; best practices in Java. Prerequisite: CSE 2221. Often taken concurrently with CSE 2321.
+
+COURSE | CSE 2321: Foundations I: Discrete Structures (3.0 units)
+Propositional and first-order logic; basic proof techniques; graphs, trees; analysis of algorithms; asymptotic analysis; recurrence relations. This is a math-heavy foundations course.
+
+COURSE | CSE 2421: Systems I: Introduction to Low-Level Programming and Computer Organization (4.0 units)
+Introduction to computer architecture at the machine and assembly language level; pointers and addressing; C programming at the machine level; computer organization.
+
+COURSE | CSE 2431: Systems II: Introduction to Operating Systems (3.0 units)
+Introduction to operating system concepts: process, CPU scheduling, memory management, file system and storage, and multi-threaded programming. Prerequisite: CSE 2421.
+
+COURSE | CSE 3521: Survey of Artificial Intelligence I: Basic Techniques (3.0 units)
+Survey of basic concepts and techniques in artificial intelligence, including problem solving, knowledge representation, and machine learning.

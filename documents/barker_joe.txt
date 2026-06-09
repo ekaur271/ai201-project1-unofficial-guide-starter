@@ -1,0 +1,20 @@
+TITLE: Joe Barker — CSE professor reviews
+SOURCE: Rate My Professors
+URL: https://www.ratemyprofessors.com/professor/1628244
+
+OVERALL: Joe Barker, Computer Science, The Ohio State University. Overall rating 3.4/5, 57% would take again, difficulty 3.0/5. Reviews are for CSE 3521 (Survey of Artificial Intelligence I). Reviewers agree his exams are fair but describe his lectures as dry and his demeanor as odd or defensive about questions.
+
+REVIEW | CSE 3521 | April 2026 | Quality 3/5 | Difficulty 3/5 | Tags: Participation matters, Clear grading criteria, Respected
+Joe Barker is a chill and fair professor. His exams are very fair, though almost no preparation material is given for them, and he doesn't provide much information during review days. The lectures are alright, and attendance is taken every day even though it does nothing for you. Better than the other AI professors.
+
+REVIEW | CSE 3521 | January 2026 | Quality 2/5 | Difficulty 2/5
+Similar to the previous comment, he's kind of odd. He gives the vibe of a Discord moderator. His lectures are very dry, and he reads right off the slides. He's strangely defensive when questions are asked, but at least his exams are fair and easy if you read the slides.
+
+REVIEW | CSE 3521 | October 2025 | Quality 2/5 | Difficulty 4/5 | Tags: Lecture heavy
+Huge ego but maybe the weirdest professor I've ever had. He gets offended when students ask questions so we just stopped asking. During review I asked "could you also go over xxx" and he replied "You mean 'would' I also go over that. Obviously I can."
+
+REVIEW | CSE 3521 | December 2024 | Quality 3/5 | Difficulty 3/5 | Tags: Lecture heavy, Graded by few things
+The entire semester consists of being lectured at with dry and slow slides. He assigns a few homeworks throughout the semester but weirdly they are primarily all coding which is never discussed in lecture and does not show up on exams.
+
+REVIEW | CSE 3521 | December 2024 | Quality 4/5 | Difficulty 3/5 | Tags: Participation matters, Clear grading criteria, Gives good feedback
+Professor Barker is a pretty great professor. While his lectures are a little dry, they're very informative and leave you well-versed in the material. His exams are very fair and the TAs give good feedback on the HWs so that you are able to improve.

@@ -1,0 +1,20 @@
+TITLE: KT Vandergriff — CSE professor reviews
+SOURCE: Rate My Professors
+URL: https://www.ratemyprofessors.com/professor/2942475
+
+OVERALL: KT Vandergriff, Computer Science, The Ohio State University. Overall rating 2.7/5 based on 57 ratings, 37% would take again, difficulty 4.2/5. Reviews are for CSE 2321 (Foundations I, discrete structures) and CSE 2221 (Software I). Opinions are sharply split: praised as kind and engaging, but the courses are considered very tough with little exam practice provided.
+
+REVIEW | CSE 2321 | March 2026 | Quality 1/5 | Difficulty 5/5 | Tags: Tough grader, Caring, Test heavy
+DO NOT TAKE FOUNDATIONS 1 WITH THEM. IF YOU ARE ANYTHING LESS THAN STELLAR AT MATH, THIS PROFESSOR IS NOT FOR YOU.
+
+REVIEW | CSE 2221 | February 2026 | Quality 5/5 | Difficulty 2/5 | Grade B | Would take again: Yes
+She's extremely kind and easy to talk to after class. Good professor and engaging lectures, definitely gonna try to get her as my professor for 2321! We had great conversations after class. She doesn't belittle you for saying the wrong things or asking questions. 10/10.
+
+REVIEW | CSE 2221 | January 2026 | Quality 5/5 | Difficulty 5/5 | Grade A+ | Would take again: Yes
+She offers a very tough course, but not one that is impossible. I consistently took notes and made sure to revise them often, especially before exams. I did a lot of generated practice problems as well to prepare for exams. Exam review materials aren't provided for this course so be prepared to do lots of self studying — slides are helpful.
+
+REVIEW | CSE 2221 | January 2026 | Quality 4/5 | Difficulty 3/5 | Grade B+ | Would take again: Yes
+I really enjoyed her teaching. I thought that she gave really insightful feedback during labs, including how to fix mistakes in the lab, as well as ideas on how to improve my abilities and further my learning in the topics.
+
+REVIEW | CSE 2221 | December 2025 | Quality 3/5 | Difficulty 5/5 | Tags: Tough grader, Graded by few things
+Really rough tests, even when given a curve. She was a really nice and helpful professor, and made CS more interesting, but the software class itself more boring. Lectures and labs barely relate to tests and there is no test practice for her class. You will need to put a lot of effort and time into this, but I believe it is doable.

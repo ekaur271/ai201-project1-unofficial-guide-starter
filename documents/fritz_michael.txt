@@ -1,0 +1,20 @@
+TITLE: Michael Fritz — CSE professor reviews
+SOURCE: Rate My Professors
+URL: https://www.ratemyprofessors.com/professor/1943610
+
+OVERALL: Michael Fritz, Computer Science, The Ohio State University. Overall rating 4.4/5, 92% would take again, difficulty 2.4/5. Reviews are for CSE 1224 (an introductory Python programming course). Described as an easy class with a blunt, sometimes disengaged teaching style, but clear explanations of Python.
+
+REVIEW | CSE 1224 | April 2026 | Quality 4/5 | Difficulty 1/5 | Grade B+ | Would take again: Yes | Tags: Clear grading criteria, Lots of homework, Lecture heavy
+Fritz was a chill guy. He seems very blunt and sort of mean, but he teaches things greatly.
+
+REVIEW | CSE 1224 | April 2026 | Quality 3/5 | Difficulty 1/5 | Grade A+ | Would take again: Yes | Tags: Graded by few things
+The easiest class I have ever taken. Exams were super easy, and he didn't want to grade.
+
+REVIEW | CSE 1224 | April 2026 | Quality 2/5 | Difficulty 1/5 | Grade A | Would take again: Yes | Tags: Clear grading criteria
+This is an easy class. However, I do not think the professor cares or wants to teach it.
+
+REVIEW | CSE 1224 | January 2026 | Quality 3/5 | Difficulty 2/5 | Grade A | Would take again: Yes | Tags: Clear grading criteria, Test heavy
+Lectures were pretty boring, but as long as you study a lot for the 2 exams, you can do well.
+
+REVIEW | CSE 1224 | December 2025 | Quality 5/5 | Difficulty 1/5 | Grade A | Would take again: Yes | Tags: Amazing lectures, Inspirational, Hilarious
+Mr. Fritz made Python super easy to learn. He explains concepts very clearly so that anyone can follow along.
