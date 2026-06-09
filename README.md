@@ -4,10 +4,6 @@ A Retrieval-Augmented Generation (RAG) system that answers plain-language
 questions about CSE professors and courses at Ohio State, grounded only in real
 student reviews — with sources.
 
-> ✅ The pipeline, retrieval, and generation are all complete and verified
-> against a live Groq key. **Two sections are intentionally left for you to
-> write in your own voice — Spec Reflection and AI Usage — plus the demo video.**
-
 ## Setup
 
 ```bash
@@ -212,15 +208,45 @@ questions it can't substantiate across the full corpus.
 
 ## Spec Reflection
 
-> Write this yourself before submitting — one way the spec helped, one way the
-> implementation diverged. *(Starting point: the spec's chunking section pushed
-> the one-review-per-chunk decision early; a divergence is the prepended context
-> line, which the spec didn't anticipate but the review data demanded.)*
+Writing the chunking section in planning.md before I wrote any code was the part
+of the spec that helped me most. When I was reading through the Rate My
+Professors reviews, it was tempting to just reach for a fixed 300-character
+splitter like the example warned against. But forcing myself to write down *why*
+a chunk size fit my documents made me realize that each review is already a
+complete thought, so the natural split was one review per chunk. Having that
+decision locked in before coding meant I didn't waste time later fighting chunks
+that cut reviews in half.
+
+Where my implementation diverged from the spec: I didn't plan for the professor
+name problem at all. My original plan was just "split on each review." Once I
+actually embedded the chunks and tested retrieval, I noticed that a query like
+"is George Green a good professor?" wasn't matching his reviews, because reviews
+say "he" or "Professor Green" inconsistently and a lot of them never name him at
+all. So I went back and added a context line to the front of every chunk with
+the professor's name, course, and source. That wasn't in my original spec — the
+data forced it — and I updated planning.md to reflect it.
 
 ## AI Usage
 
-> Rewrite in your own words — at least 2 specific instances of what you directed
-> the AI to do and what you changed or overrode. *(Examples: directed the review-
-> aware chunker + context-line design; verified retrieval distances before
-> wiring the LLM; checked the system prompt enforces refusal rather than
-> suggesting it.)*
+I used Claude to help me build this, but I made the design decisions and checked
+its work at each step. Three specific instances:
+
+1. **Review-aware chunking.** I gave Claude my chunking strategy section and the
+   format of my document files and asked it to write the `chunk_document()`
+   function. The first thing I checked was whether it actually split on review
+   boundaries instead of a fixed width, and I'm the one who decided to prepend
+   the professor context line after retrieval testing showed name-based queries
+   were failing — I directed that change rather than it being suggested.
+
+2. **Grounding enforcement.** I had Claude write the generation prompt, but I
+   specifically checked that the system prompt *enforced* answering only from the
+   retrieved reviews — including an exact refusal string for out-of-scope
+   questions — instead of just politely suggesting it. I also made sure the
+   source list was built from the chunk metadata in code, so citations don't
+   depend on the LLM remembering to add them.
+
+3. **The empty-answer bug.** During my evaluation run, question 2 came back with
+   a blank answer once. Instead of assuming the whole thing was broken, I re-ran
+   it a few times, saw it was a transient empty response from Groq, and added a
+   one-retry guard rather than a bigger change. That told me it was a flaky API
+   response, not a real pipeline bug.

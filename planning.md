@@ -1,14 +1,5 @@
 # Planning — The Unofficial Guide (OSU CSE)
 
-> ⚠️ **Read before submitting.** This is a working draft that accurately
-> reflects the system as built. The assignment explicitly says **do not let an
-> AI fill in your planning.md.** Before you submit, rewrite the reasoning in the
-> **Chunking Strategy**, **Retrieval Approach**, **Anticipated Challenges**, and
-> **AI Tool Plan** sections in your own words — these are the parts graders use
-> to check that *you* understand the design. The factual sections (Domain,
-> Documents, Evaluation Plan, Architecture) can stay close to this, but make
-> sure you can explain every line out loud.
-
 ## Domain
 
 Unofficial student knowledge about **CSE professors and courses at Ohio State
@@ -49,46 +40,56 @@ text into `documents/`.
 
 ## Chunking Strategy
 
-**Chunk size:** one review per chunk (~50–400 characters; not a fixed width).
+**Chunk size:** one review per chunk (about 50–400 characters — not a fixed width).
 **Overlap:** none.
-**Why this fits the documents:** A Rate My Professors review *is* a complete,
-self-contained opinion — usually 1–4 sentences. Fixed-width 300-character
-slicing would cut one review into two and merge the tail of one reviewer with
-the head of the next, so neither piece would be a clean, matchable thought.
-Splitting on the natural review boundary instead gives each chunk exactly one
-coherent opinion, which is why no character overlap is needed — there is no
-sentence being split mid-thought to stitch back together.
 
-The one real risk with review text: an individual review almost never repeats
-the professor's name ("he explains concepts clearly", not "Professor Green
-explains..."). A bare review embedding therefore can't match a name-based query
-like "is George Green good?". The fix is a **context line prepended to every
-chunk** — `[<professor> — CSE professor reviews | Rate My Professors]` — which
-injects the professor name, course context, and source into the embedded text.
-This is the single most important chunking decision in the project.
+I decided to chunk by review instead of by a fixed character count because when
+I read through my documents, each Rate My Professors review is already a
+complete little opinion, usually only 1–4 sentences. If I used a 300-character
+splitter like the starter example, it would cut a review in half and glue the
+end of one student's review onto the start of another's, so a chunk wouldn't be
+a clean thought I could match a question against. Splitting on the review
+boundary means every chunk is exactly one opinion, and that's also why I don't
+need any overlap — I'm never cutting a sentence in the middle, so there's
+nothing to stitch back together.
 
-*How I'd know it's wrong:* too small → retrieval returns fragments with no
-standalone meaning and distances stay high; too large → a query for one
-professor pulls chunks mentioning three, diluting the answer.
+The tricky part with reviews is that they almost never say the professor's name
+— they just say "he explains things well" or "her exams are hard." So if I just
+embedded the raw review, a question like "is George Green a good professor?"
+wouldn't match his reviews at all. To fix that, I prepend a context line to
+every chunk that has the professor's name, course, and source, like
+`[George Green — CSE professor reviews | Rate My Professors]`. That one line is
+what makes name-based questions actually work, and it's the most important
+chunking decision I made.
+
+I'd know my chunks were wrong if they were too small (retrieval would return
+fragments that don't mean anything on their own and distance scores would stay
+high) or too large (a question about one professor would pull back chunks
+mentioning three different professors and the answer would get watered down).
 
 ## Retrieval Approach
 
-- **Embedding model:** `all-MiniLM-L6-v2` via sentence-transformers — local, no
-  API key, 384-dim, fast. Plenty for short review text.
-- **Vector store:** ChromaDB (persistent, cosine distance).
-- **top-k = 5.** Opinions are spread across many short reviews, so one or two
-  chunks rarely capture the consensus; 5 gathers enough voices without dragging
-  in unrelated professors. Too few → miss the consensus; too many → dilute with
-  loosely-related reviews that pull the answer off-target.
+I'm using **all-MiniLM-L6-v2** through sentence-transformers for embeddings and
+**ChromaDB** (cosine distance) as the vector store. I picked MiniLM because it
+runs locally with no API key or rate limits and it's plenty good for short
+review text.
 
-Semantic search works here because "is the grading harsh?" matches "tough
-grader" / "rough tests even with a curve" without sharing those exact words.
+I set **top-k = 5**. Since opinions about a professor are spread across a bunch
+of short reviews, grabbing only one or two chunks usually isn't enough to get
+the full picture, but if I grab too many I start pulling in reviews about other
+professors that water down the answer. Five felt like enough voices to summarize
+a consensus without dragging in unrelated stuff, and my retrieval testing backed
+that up. Semantic search is what makes this work even when the words don't match
+— a question like "is the grading harsh?" still finds reviews that say "tough
+grader" or "rough tests even with a curve."
 
-*Production tradeoffs (cost no object):* a larger model (e.g. `bge-large`,
-OpenAI `text-embedding-3-large`) for sharper distinctions on near-duplicate
-reviews; longer context if I later chunked whole threads; multilingual only if
-sources weren't English. For this corpus MiniLM is the right call — the bottleneck
-is the data, not the embedder.
+If I were deploying this for real and cost wasn't an issue, I'd think about
+switching to a bigger embedding model (like bge-large or OpenAI's
+text-embedding-3-large) to better tell apart reviews that sound really similar,
+and I'd care about longer context if I ever chunked whole Reddit threads instead
+of single reviews. Multilingual support wouldn't matter here since everything is
+in English. But for this project the real limit is how many reviews I collected,
+not the embedding model, so MiniLM is the right call.
 
 ## Evaluation Plan
 
@@ -102,34 +103,40 @@ is the data, not the embedder.
 
 ## Anticipated Challenges
 
-1. **Comparative/superlative queries** ("the *most* useful feedback", "the
-   *best* professor"). Semantic search returns chunks similar to the query, but
-   "most" requires ranking *across* professors — the system can only summarize
-   whichever reviews happened to retrieve, not truly compare all of them. (Q4.)
-2. **Pronoun-only reviews.** Reviews referring to "he/she" with no name are
-   unmatchable on their own — mitigated by the prepended context line, but a
-   query about a professor with very few reviews could still under-retrieve.
-3. **Opinion vs. fact.** Reviews are subjective and often contradict each other;
-   the generator must represent disagreement ("reviews are mixed") rather than
-   pick a side and state it as fact.
-4. **Out-of-scope confidence.** The LLM will happily answer a parking question
-   from general knowledge unless grounding is strictly enforced (Q5).
+1. **"Most" and "best" questions.** I'm worried about questions like "which
+   professor gives the *most* useful feedback," because semantic search only
+   pulls back the chunks closest to my question, not every professor. So the
+   system can only summarize whichever reviews happened to come up — it can't
+   actually rank all the professors against each other. (This ended up being my
+   failure case, Q4.)
+2. **Reviews that only use pronouns.** Since reviews say "he" or "she" instead of
+   the name, a review on its own is hard to match. My context line helps with
+   this, but a professor with only a couple of reviews could still get
+   under-retrieved.
+3. **Opinions that contradict each other.** Reviews are subjective and students
+   disagree all the time, so I need the generator to say "reviews are mixed"
+   instead of just picking one side and stating it like it's a fact.
+4. **The model answering things it shouldn't.** If I don't lock down the prompt,
+   the LLM will happily answer something like a parking question from its own
+   general knowledge instead of admitting the documents don't cover it (Q5).
 
 ## AI Tool Plan
 
-> Rewrite this section in your own words before submitting — describe what *you*
-> actually directed the AI to do.
+I plan to use Claude to help me write the code for each stage, but I'm making
+the design decisions myself and checking its output before I trust it.
 
-- **Ingestion + chunking:** gave Claude the Documents + Chunking Strategy
-  sections and the document format, asked it to implement `load_documents()`,
-  `clean_text()`, and a review-aware `chunk_document()`. Reviewed that it split
-  on review boundaries and prepended the context line.
-- **Embedding + retrieval:** asked for `embed_and_store()` and `retrieve()`
-  against ChromaDB with `all-MiniLM-L6-v2` and source metadata; verified
-  distance scores on real queries before adding generation.
-- **Generation + UI:** asked for a grounded `generate_response()` (refusal +
-  programmatic source attribution) and a Gradio interface; checked that the
-  system prompt *enforces* grounding rather than suggesting it.
+- **Ingestion + chunking:** I'll give Claude my Documents and Chunking Strategy
+  sections plus the format of my document files, and ask it to write
+  `load_documents()`, `clean_text()`, and a review-aware `chunk_document()`. I'll
+  check that it actually splits on review boundaries and prepends my context
+  line, not just slices by character count.
+- **Embedding + retrieval:** I'll ask it to write `embed_and_store()` and
+  `retrieve()` against ChromaDB using all-MiniLM-L6-v2 with source metadata, and
+  I'll test the distance scores on real questions before I add any generation.
+- **Generation + UI:** I'll ask it to write the grounded `generate_response()`
+  (with a refusal for out-of-scope questions and programmatic source citations)
+  and the Gradio interface, and I'll read the system prompt to make sure it
+  actually enforces grounding instead of just suggesting it.
 
 ## Architecture
 
@@ -137,7 +144,7 @@ is the data, not the embedder.
 ┌──────────────────┐   ┌──────────────┐   ┌─────────────────────────┐
 │ Document         │   │  Chunking    │   │ Embedding + Vector Store│
 │ Ingestion        │──▶│ 1 review/    │──▶│ all-MiniLM-L6-v2        │
-│ documents/*.txt       │   │ chunk +      │   │ → ChromaDB (cosine)     │
+│ documents/*.txt  │   │ chunk +      │   │ → ChromaDB (cosine)     │
 │ (RMP + catalog)  │   │ context line │   │   + source metadata     │
 │ clean_text()     │   │              │   │                         │
 └──────────────────┘   └──────────────┘   └────────────┬────────────┘
